@@ -1,0 +1,19 @@
+{
+  "name": "astjs",
+  "version": "0.0.0",
+  "description": "A site which generates and shows a visualization of the AST for a JS program",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ".git"
+  },
+  "author": "Alice Pote",
+  "license": "ISC",
+  "dependencies": {
+    "esprima": "^2.4.1",
+    "express": "^4.13.1"
+  }
+}
