@@ -21,6 +21,7 @@
 </style>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="js/children.js"></script>
 <script>
 
 var width = window.innerWidth/2,//960,
@@ -73,7 +74,9 @@ d3.json("/hello_world.json", function(error, root) {
 // d3.json(data_nodes[0], function(error, root) {
     if (error) throw error;
 
-    var nodes = cluster.nodes(jsonObj); //root);
+    cluster.children = getchildren;
+
+    var nodes = cluster.nodes(root.body); //root);
         links = cluster.links(nodes);
         console.log(nodes);
 
@@ -101,4 +104,4 @@ d3.json("/hello_world.json", function(error, root) {
 
 d3.select(self.frameElement).style("height", height + "px");
 
-</script>"))
+</script>
