@@ -69,13 +69,11 @@ var jsonObj =
 
 var data_nodes = [jsonObj];
 
-d3.json("/hello_world.json", function(error, root) {
+d3.json("/hello_world_tree.json", function(error, root) {
 // d3.json(data_nodes[0], function(error, root) {
     if (error) throw error;
 
-    cluster.children = getchildren;
-
-    var nodes = cluster.nodes(root.body); //root);
+    var nodes = cluster.nodes(root);
         links = cluster.links(nodes);
         console.log(nodes);
 
