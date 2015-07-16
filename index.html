@@ -43,11 +43,15 @@ svg {
 <body>
 
 <div id="editor"> 
-    function myfunc (foo) {
-        console.log(foo);
-    }
-</div>
+var num = process.argv[2];
+var message = 'Hello World!';
 
+if (num > 5) {
+    console.log(message.split('').reverse().join(''));
+} else {
+    console.log(message)
+}
+</div>
 
 <div id="reload">
     <button id="reload_button">
