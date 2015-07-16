@@ -6,7 +6,7 @@
 //  break;
 // etc
 
-function getChildren (node) {
+function formatNode (node) {
     switch (node.type)
     {
         case 'Program':
@@ -253,44 +253,48 @@ function getChildren (node) {
             return {
                 name: node['type'],
                 children: [
-                    node['operator'],
                     node['left'],
                     node['right']
                 ],
-                data:  {}
+                data: {
+                    operator: node['operator']
+                }
             };
             break;
         case 'AssignmentExpression':
             return {
                 name: node['type'],
                 children: [
-                    node['operator'],
                     node['left'],
                     node['right']
                 ],
-                data:  {}
+                data: {
+                    operator: node['operator']
+                }
             };
             break;
         case 'UpdateExpression':
             return {
                 name: node['type'],
                 children: [
-                    node['operator'],
                     node['argument'],
                     node['prefix']
                 ],
-                data:  {}
+                data: {
+                    operator: node['operator']
+                }
             };
             break;
         case 'LogicalExpression':
             return {
                 name: node['type'],
                 children: [
-                    node['operator'],
                     node['left'],
                     node['right']
                 ],
-                data:  {}
+                data: {
+                    operator: node['operator']
+                }
             };
             break;
         case 'ConditionalExpression':
@@ -326,10 +330,11 @@ function getChildren (node) {
                 name: node['type'],
                 children: [
                     node['object'],
-                    node['property'],
-                    node['computed']
+                    node['property']
                 ],
-                data:  {}
+                data: {
+                    computed: node['computed']
+                }
             };
             break;
         case 'SwitchCase':
@@ -404,16 +409,21 @@ function getChildren (node) {
     }
 }
 
-function makeNode(object) {
-    // get the children
-    var nodeChildren = getChildren(object);
-    // apply makeNode to all the children
-    insChildren = [];
-    for (var i = 0; i < nodeChildren.length; i++) {
-        insChildren.push(makeNode(nodeChildren[i]));
+function makeNode(parsed) {
+    var tree = formatNode(parsed);
+    var betterChildren = [];
+
+    if (typeof tree.children !== 'undefined') {
+        for (var i = 0; i < tree.children.length; i++) {
+            betterChildren.push(makeNode(tree.children[i]));
+        }
+    } else {
+        return tree;
     }
-    return {
-        name: getName(object),
-        children: insChildren
-    }
-};
+
+    tree.children = betterChildren;
+
+    return tree;
+}
+
+
