@@ -8,6 +8,10 @@
     stroke-width: 1.5px;
 }
 
+svg {
+    float: right;
+}
+
 .node {
     font: 10px sans-serif;
 }
@@ -18,14 +22,61 @@
     stroke-width: 1.5px;
 }
 
+#editor
+
 </style>
+
+
+<!-- Ace things? -->
+
+<style type="text/css" media="screen">
+    #editor {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 50%;
+    }
+</style>
+
 <body>
+
+<div id="editor"> 
+    function myfunc (foo) {
+        console.log(foo);
+    }
+</div>
+
+
+<div id="reload">
+    <button id="reload_button">
+        Reload tree!
+    </button>
+</div>
+
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="https://cdn.rawgit.com/jquery/esprima/1.2/esprima.js"></script>
 <script src="js/d3tree.js"></script>
+<script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/tomorrow");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
 
 
 <script>
+
+function updateTree() {
+    var txt = editor.getValue()
+    var syntax_tree = esprima.parse(txt);
+    var tree = makeNode(syntax_tree);
+    return tree
+}
 
 var width = window.innerWidth/2,//960,
     height = 700;
@@ -42,36 +93,42 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(40,40)");
 
-d3.json("/hello_world_tree.json", function(error, root) {
-// d3.json(data_nodes[0], function(error, root) {
-    if (error) throw error;
+<!-- d3.json(JSON.stringify(tree), function(error, root) { -->
+<!-- // d3.json(data_nodes[0], function(error, root) { -->
+<!--     if (error) throw error; -->
 
-    var nodes = cluster.nodes(root);
-        links = cluster.links(nodes);
-        console.log(nodes);
+tree = updateTree();
 
-    var link = svg.selectAll(".link")
-        .data(links)
-        .enter().append("path")
-        .attr("class", "link")
-        .attr("d", diagonal);
+var nodes = cluster.nodes(tree);
+    links = cluster.links(nodes);
+    console.log(nodes);
 
-    var node = svg.selectAll(".node")
-        .data(nodes)
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+var link = svg.selectAll(".link")
+    .data(links)
+    .enter().append("path")
+    .attr("class", "link")
+    .attr("d", diagonal);
 
-    node.append("circle")
-        .attr("r", 4.5);
+var node = svg.selectAll(".node")
+    .data(nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 
-    node.append("text")
-        .attr("dx", function(d) { return d.children ? -8 : 8; })
-        .attr("dy", 3)
-        .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
-        .text(function(d) { return d.name; });
-});
+node.append("circle")
+    .attr("r", 4.5);
+
+node.append("text")
+    .attr("dx", function(d) { return d.children ? -8 : 8; })
+    .attr("dy", 3)
+    .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+    .text(function(d) { return d.name; });
 
 d3.select(self.frameElement).style("height", height + "px");
 
 </script>
+
+
+
+
+</body>
