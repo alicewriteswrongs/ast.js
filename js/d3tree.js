@@ -1,11 +1,3 @@
-// produces a tree that d3 will enjoy!
-//
-// switch(node.type) {
-// case ('Program'):
-//  blah;
-//  break;
-// etc
-
 function formatNode (node) {
     switch (node.type)
     {

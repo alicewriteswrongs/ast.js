@@ -21,7 +21,10 @@
 </style>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src="js/children.js"></script>
+<script src="https://cdn.rawgit.com/jquery/esprima/1.2/esprima.js"></script>
+<script src="js/d3tree.js"></script>
+
+
 <script>
 
 var width = window.innerWidth/2,//960,
@@ -38,36 +41,6 @@ var svg = d3.select("body").append("svg")
     .attr("height", height)
     .append("g")
     .attr("transform", "translate(40,40)");
-
-
-var jsonObj =
-  {
- "name": "flare",
- "children": [
-  {
-   "name": "analytics",
-   "children": [
-    {
-     "name": "cluster",
-     "children": [
-      {"name": "AgglomerativeCluster", "size": 3938},
-      {"name": "CommunityStructure", "size": 3812},
-      {"name": "MergeEdge", "size": 743}
-     ]
-    },
-    {
-     "name": "graph",
-     "children": [
-      {"name": "BetweennessCentrality", "size": 3534},
-      {"name": "LinkDistance", "size": 5731}
-     ]
-    }
-   ]
-  }
- ]
-};
-
-var data_nodes = [jsonObj];
 
 d3.json("/hello_world_tree.json", function(error, root) {
 // d3.json(data_nodes[0], function(error, root) {
