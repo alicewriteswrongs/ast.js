@@ -244,7 +244,7 @@ function getChildren (node) {
                 children: [
                     node['operator'],
                     node['prefix'],
-                    node['argument]
+                    node['argument']
                 ],
                 data:  {}
             };
@@ -403,7 +403,7 @@ function getChildren (node) {
             break;
     }
 }
-        
+
 function makeNode(object) {
     // get the children
     var nodeChildren = getChildren(object);
@@ -417,4 +417,3 @@ function makeNode(object) {
         children: insChildren
     }
 };
-
