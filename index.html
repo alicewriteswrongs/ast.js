@@ -55,7 +55,7 @@ if (num > 5) {
 </div>
 
 <div id="reload">
-    <button id="reload_button">
+    <button id="reload_button" onclick="updateTree()">
         Reload tree!
     </button>
 </div>
@@ -65,7 +65,6 @@ if (num > 5) {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="https://cdn.rawgit.com/jquery/esprima/1.2/esprima.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="js/d3tree.js"></script>
 <script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
@@ -130,8 +129,6 @@ function updateTree() {
 }
 
 updateTree();
-
-$('reload_button').click(updateTree());
 
 </script>
 
