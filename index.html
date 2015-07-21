@@ -22,10 +22,6 @@ svg {
     stroke-width: 1.5px;
 }
 
-.button {
-    float: right;
-}
-
 #editor {
     position: absolute;
     top: 0;
@@ -35,22 +31,39 @@ svg {
     width: 35%;
 }
 
-#reload {
-    float:right;
+#reload_button {
+    float: right;
+    -webkit-border-radius: 10;
+    -moz-border-radius: 10;
+    border-radius: 10px;
+    font-family: Arial;
+    color: #0d0e0f;
+    font-size: 15px;
+    background: #ffffff;
+    padding: 10px 20px 10px 20px;
+    border: solid #4271AE 1px;
+    text-decoration: none;
 }
- 
+
+#reload_button {
+    background: #96c7e6;
+    text-decoration: none;
+}
+
 </style>
 
 <body>
 
 <div id="editor"> 
+// some example text
+// press 'reload' to see changes!
 var num = process.argv[2];
 var message = 'Hello World!';
 
 if (num > 5) {
     console.log(message.split('').reverse().join(''));
 } else {
-    console.log(message)
+    console.log(message);
 }
 </div>
 
