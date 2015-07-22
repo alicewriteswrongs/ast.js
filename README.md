@@ -1,7 +1,8 @@
 #ast.js
 
-A site which will generate an AST from a JavaScript program and show a nice d3
-visualization of that tree.
+A site which will generate an AST from a JavaScript program and show
+a nice d3 visualization of that tree. Check it out
+[here](https://aliceriot.github.io/ast.js/)!
 
 ##Viewing locally
 
