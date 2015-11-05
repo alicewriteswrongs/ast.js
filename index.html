@@ -1,152 +1,106 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-.node circle {
-    fill: #fff;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-}
-
-svg {
-    float: right;
-}
-
-.node {
-    font: 10px sans-serif;
-}
-
-.link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1.5px;
-}
-
-#editor {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 35%;
-}
-
-#reload_button {
-    float: right;
-    -webkit-border-radius: 10;
-    -moz-border-radius: 10;
-    border-radius: 10px;
-    font-family: Arial;
-    color: #0d0e0f;
-    font-size: 15px;
-    background: #ffffff;
-    padding: 5px 10px 5px 10px;
-    border: solid #4271AE 1px;
-    text-decoration: none;
-}
-
-#reload_button:hover {
-    background: #96c7e6;
-    text-decoration: none;
-    border: solid #ffffff 1px;
-}
-
-</style>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Abstract Syntax Tree Visualization</title>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
 
 <body>
+  <!-- Ace things? -->
 
-<div id="editor"> 
-// some example text
-// press 'Reload tree' to see changes!
-var num = process.argv[2];
-var message = 'Hello World!';
 
-if (num > 5) {
-    console.log(message.split('').reverse().join(''));
-} else {
-    console.log(message);
-}
-</div>
+  <div id="editor">
+    var num = process.argv[2];
+    var message = 'Hello World!';
 
-<div id="reload">
-    <button id="reload_button" onclick="updateTree()">
-        Reload tree
+    if (num > 5) {
+      console.log(message.split('').reverse().join(''));
+    } else {
+      console.log(message);
+    }
+  </div>
+
+  <div id="reload">
+    <button id="reload_button">
+      Reload tree!
     </button>
-</div>
+  </div>
 
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src="https://cdn.rawgit.com/jquery/esprima/1.2/esprima.js"></script>
-<script src="js/d3tree.js"></script>
-<script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/tomorrow");
-    editor.getSession().setMode("ace/mode/javascript");
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://cdn.rawgit.com/jquery/esprima/1.2/esprima.js"></script>
+  <script src="js/d3tree.js"></script>
+  <script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/tomorrow");
+  editor.getSession().setMode("ace/mode/javascript");
+  </script>
 
 
-<script>
+  <script>
 
-function updateTree() {
-    var txt = editor.getValue();
+  function updateTree() {
+    var txt = editor.getValue()
     var syntax_tree = esprima.parse(txt);
     var tree = makeNode(syntax_tree);
+    return tree
+  }
 
-    // clear d3 elements
-    d3.select("svg").remove();
+  var width = window.innerWidth/2,//960,
+  height = 700;
 
-    var width = window.innerWidth/2,//960,
-        height = 700;
+  var cluster = d3.layout.cluster()
+  .size([width, height- 160]);
 
-    var cluster = d3.layout.cluster()
-        .size([width, height- 160]);
+  var diagonal = d3.svg.diagonal()
+  .projection(function(d) { return [d.x, d.y]; });
 
-    var diagonal = d3.svg.diagonal()
-        .projection(function(d) { return [d.x, d.y]; });
+  var svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  .append("g")
+  .attr("transform", "translate(40,40)");
 
-    var svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", "translate(40,40)");
+  <!-- d3.json(JSON.stringify(tree), function(error, root) { -->
+  <!-- // d3.json(data_nodes[0], function(error, root) { -->
+  <!--     if (error) throw error; -->
 
+  tree = updateTree();
 
-    var nodes = cluster.nodes(tree);
-        links = cluster.links(nodes);
-        console.log(nodes);
+  var nodes = cluster.nodes(tree);
+  links = cluster.links(nodes);
+  console.log(nodes);
 
-    var link = svg.selectAll(".link")
-        .data(links)
-        .enter().append("path")
-        .attr("class", "link")
-        .attr("d", diagonal);
+  var link = svg.selectAll(".link")
+  .data(links)
+  .enter().append("path")
+  .attr("class", "link")
+  .attr("d", diagonal);
 
-    var node = svg.selectAll(".node")
-        .data(nodes)
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+  var node = svg.selectAll(".node")
+  .data(nodes)
+  .enter().append("g")
+  .attr("class", "node")
+  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 
-    node.append("circle")
-        .attr("r", 4.5);
+  node.append("circle")
+  .attr("r", 4.5);
 
-    node.append("text")
-        .attr("dx", function(d) { return d.children ? -8 : 8; })
-        .attr("dy", 3)
-        .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
-        .text(function(d) { return d.name; });
+  node.append("text")
+  .attr("dx", function(d) { return d.children ? -8 : 8; })
+  .attr("dy", 3)
+  .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+  .text(function(d) { return d.name; });
 
-    d3.select(self.frameElement).style("height", height + "px");
-}
+  d3.select(self.frameElement).style("height", height + "px");
 
-updateTree();
-
-</script>
-
+  </script>
 
 
 
 </body>
+</html>
