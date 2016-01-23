@@ -6,25 +6,30 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
 <body>
+  <!-- consider some larger container class  -->
+  <div class="editor-container">
 
-<div id="editor">
-var num = process.argv[2];
-var message = 'Hello World!';
+    <div id="editor">
+      var num = process.argv[2];
+      var message = 'Hello World!';
 
-if (num > 5) {
-    console.log(message.split('').reverse().join(''));
-} else {
-    console.log(message)
-}
-</div>
+      if (num > 5) {
+        console.log(message.split('').reverse().join(''));
+      } else {
+        console.log(message);
+      }
+    </div>
 
-<div id="reload">
-    <button id="reload_button">
-        Reload tree!
-    </button>
-</div>
+    <div class="reload-container">
+      <div id="reload">
+        <button id="reload-button">
+          Reload tree!
+        </button>
+      </div>
+    </div>
 
 
+  </div>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
@@ -33,7 +38,7 @@ if (num > 5) {
 <script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/tomorrow");
+    editor.setTheme("ace/theme/solarized_dark");
     editor.getSession().setMode("ace/mode/javascript");
 </script>
 
